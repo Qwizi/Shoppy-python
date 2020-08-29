@@ -6,14 +6,8 @@ class ResourceClient:
     endpoint = None
     api_url = "https://shoppy.gg/api"
 
-    def __init__(self, api_key):
-        self.api_key = api_key
-        self.session = requests.Session()
-        self.session.headers.update({
-            'Authorization': self.api_key,
-            'Content-Type': 'application/json',
-            'User-Agent': 'Qwizi App'
-        })
+    def __init__(self, session):
+        self.session = session
 
 
 
@@ -63,7 +57,14 @@ class Query(ResourceClient, List, Retrieve, Update):
 
 class Shoppy:
     def __init__(self, api_key):
-        self.product = Product(api_key)
-        self.order = Order(api_key)
-        self.feedback = FeedBack(api_key)
-        self.query = Query(api_key)
+        self.api_key = api_key
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Authorization': self.api_key,
+            'Content-Type': 'application/json',
+            'User-Agent': 'Qwizi App'
+        })
+        self.product = Product(self.session)
+        self.order = Order(self.session)
+        self.feedback = FeedBack(self.session)
+        self.query = Query(self.session)
