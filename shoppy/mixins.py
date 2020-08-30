@@ -2,7 +2,9 @@ import simplejson as json
 
 
 class ListMixin:
-    def list(self):
+    def list(self, page=None):
+        if page is not None:
+            return self.session.get(f"{self.api_url}{self.endpoint}/?page={page}")
         return self.session.get(f"{self.api_url}{self.endpoint}")
 
 

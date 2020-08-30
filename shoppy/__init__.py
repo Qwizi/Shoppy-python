@@ -1,8 +1,5 @@
 import requests
-from .product import ProductResource
-from .order import OrderResource
-from .feedback import FeedBackResource
-from .query import QueryResource
+from .resources import ProductResource, OrderResource, FeedBackResource, QueryResource, PaymentResource
 
 
 class Shoppy:
@@ -18,3 +15,4 @@ class Shoppy:
         self.order = OrderResource(self.session)
         self.feedback = FeedBackResource(self.session)
         self.query = QueryResource(self.session)
+        self.payment = PaymentResource(self.session)
