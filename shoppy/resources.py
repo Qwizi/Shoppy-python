@@ -1,31 +1,30 @@
-from .resource_client import ResourceClient
-from .mixins import ListMixin, CreateMixin, RetrieveMixin, UpdateMixin, DeleteMixin
-import simplejson as json
+from shoppy.mixins import ListMixin, RetrieveMixin
+from shoppy.schemas import ProductOut, FeedbackOut, QueryOut, OrderOut
 
 
-class ProductResource(ResourceClient, ListMixin, CreateMixin, RetrieveMixin, UpdateMixin, DeleteMixin):
+class ResourceClient:
+    endpoint = None
+
+    def __init__(self, api_url: str, headers: dict[str]):
+        self.api_url = api_url
+        self.headers = headers
+
+
+class ProductResource(ResourceClient, ListMixin):
+    schema = ProductOut
     endpoint = "/v1/products/"
 
 
-class FeedBackResource(ResourceClient, ListMixin, RetrieveMixin):
+class FeedbackResource(ResourceClient, ListMixin):
+    schema = FeedbackOut
     endpoint = "/v1/feedbacks/"
 
 
-class OrderResource(ResourceClient, ListMixin, RetrieveMixin):
-    endpoint = "/v1/orders/"
-
-
-class QueryResource(ResourceClient, ListMixin, RetrieveMixin):
+class QueriesResource(ResourceClient, ListMixin, RetrieveMixin):
+    schema = QueryOut
     endpoint = "/v1/queries/"
-    STATUS = ('close', 'reopen')
-
-    def reply(self, query_id, message):
-        return self.session.post(f"{self.endpoint}{query_id}/", data=json.dumps({'message': message}))
-
-    def update(self, obj_id, updated_data, action):
-        return self.session.post(f"{self.api_url}{self.endpoint}{obj_id}/{action}", data=json.dumps(updated_data))
 
 
-class PaymentResource(ResourceClient, CreateMixin):
-    endpoint = '/v2/pay'
-
+class OrderResource(ResourceClient, ListMixin):
+    schema = OrderOut
+    endpoint = "/v1/orders/"
