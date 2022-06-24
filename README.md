@@ -10,7 +10,7 @@ API_KEY = 'your-api-key'
 
 async def main():
     # Create a new shoppy client
-    shoppy = Shoppy(API_KEY)
+    shoppy = Shoppy(api_key=API_KEY)
     # Get the list of all products
     products = await shoppy.products.list()
     # print products
